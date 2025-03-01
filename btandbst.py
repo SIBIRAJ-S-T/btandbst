@@ -330,6 +330,139 @@ class BinarySearchTree(BinaryTree):
         return node.value
 
 
+    # Height of the tree
+    def height(self):
+        return self._height_recursive(self.root)
+
+    def _height_recursive(self, node):
+        if node is None:
+            return 0
+        left_height = self._height_recursive(node.left)
+        right_height = self._height_recursive(node.right)
+        return max(left_height, right_height) + 1
+
+    # Diameter of the tree (longest path between any two nodes)
+    def diameter(self):
+        return self._diameter_recursive(self.root)[0]
+
+    def _diameter_recursive(self, node):
+        if node is None:
+            return (0, 0)  # (diameter, height)
+        left_diameter, left_height = self._diameter_recursive(node.left)
+        right_diameter, right_height = self._diameter_recursive(node.right)
+        current_height = max(left_height, right_height) + 1
+        current_diameter = max(left_diameter, right_diameter, left_height + right_height + 1)
+        return (current_diameter, current_height)
+
+    # Check if the tree is balanced
+    def is_balanced(self):
+        return self._is_balanced_recursive(self.root)
+
+    def _is_balanced_recursive(self, node):
+        if node is None:
+            return True
+        left_height = self._height_recursive(node.left)
+        right_height = self._height_recursive(node.right)
+        if abs(left_height - right_height) <= 1 and self._is_balanced_recursive(node.left) and self._is_balanced_recursive(node.right):
+            return True
+        return False
+
+    # Check if the tree is a valid Binary Search Tree (BST)
+    def is_bst(self):
+        return self._is_bst_recursive(self.root, float('-inf'), float('inf'))
+
+    def _is_bst_recursive(self, node, min_val, max_val):
+        if node is None:
+            return True
+        if node.value <= min_val or node.value >= max_val:
+            return False
+        return self._is_bst_recursive(node.left, min_val, node.value) and self._is_bst_recursive(node.right, node.value, max_val)
+
+    # Find the Lowest Common Ancestor (LCA) of two nodes
+    def lca(self, p, q):
+        return self._lca_recursive(self.root, p, q)
+
+    def _lca_recursive(self, node, p, q):
+        if node is None:
+            return None
+        if node.value == p or node.value == q:
+            return node
+        left = self._lca_recursive(node.left, p, q)
+        right = self._lca_recursive(node.right, p, q)
+        if left and right:
+            return node
+        return left if left else right
+
+    # Count the number of nodes in the tree
+    def count_nodes(self):
+        return self._count_nodes_recursive(self.root)
+
+    def _count_nodes_recursive(self, node):
+        if node is None:
+            return 0
+        return 1 + self._count_nodes_recursive(node.left) + self._count_nodes_recursive(node.right)
+
+    # Count the number of leaf nodes in the tree
+    def count_leaf_nodes(self):
+        return self._count_leaf_nodes_recursive(self.root)
+
+    def _count_leaf_nodes_recursive(self, node):
+        if node is None:
+            return 0
+        if node.left is None and node.right is None:
+            return 1
+        return self._count_leaf_nodes_recursive(node.left) + self._count_leaf_nodes_recursive(node.right)
+
+    # Print all leaf nodes
+    def print_leaf_nodes(self):
+        self._print_leaf_nodes_recursive(self.root)
+
+    def _print_leaf_nodes_recursive(self, node):
+        if node is None:
+            return
+        if node.left is None and node.right is None:
+            print(node.value, end=" ")
+        self._print_leaf_nodes_recursive(node.left)
+        self._print_leaf_nodes_recursive(node.right)
+
+    # Check if the tree is a full binary tree
+    def is_full(self):
+        return self._is_full_recursive(self.root)
+
+    def _is_full_recursive(self, node):
+        if node is None:
+            return True
+        if node.left is None and node.right is None:
+            return True
+        if node.left is not None and node.right is not None:
+            return self._is_full_recursive(node.left) and self._is_full_recursive(node.right)
+        return False
+
+    # Check if the tree is a complete binary tree
+    def is_complete(self):
+        total_nodes = self.count_nodes()
+        return self._is_complete_recursive(self.root, 0, total_nodes)
+
+    def _is_complete_recursive(self, node, index, total_nodes):
+        if node is None:
+            return True
+        if index >= total_nodes:
+            return False
+        return (self._is_complete_recursive(node.left, 2 * index + 1, total_nodes) and
+                self._is_complete_recursive(node.right, 2 * index + 2, total_nodes))
+
+    # Mirror the tree
+    def mirror(self):
+        self._mirror_recursive(self.root)
+
+    def _mirror_recursive(self, node):
+        if node is None:
+            return
+        self._mirror_recursive(node.left)
+        self._mirror_recursive(node.right)
+        node.left, node.right = node.right, node.left
+
+
 def printStructure():
   return """
   bt = BinaryTree()
@@ -720,5 +853,137 @@ class BinarySearchTree(BinaryTree):
         while node.right is not None:
             node = node.right
         return node.value
+
+    # Height of the tree
+    def height(self):
+        return self._height_recursive(self.root)
+
+    def _height_recursive(self, node):
+        if node is None:
+            return 0
+        left_height = self._height_recursive(node.left)
+        right_height = self._height_recursive(node.right)
+        return max(left_height, right_height) + 1
+
+    # Diameter of the tree (longest path between any two nodes)
+    def diameter(self):
+        return self._diameter_recursive(self.root)[0]
+
+    def _diameter_recursive(self, node):
+        if node is None:
+            return (0, 0)  # (diameter, height)
+        left_diameter, left_height = self._diameter_recursive(node.left)
+        right_diameter, right_height = self._diameter_recursive(node.right)
+        current_height = max(left_height, right_height) + 1
+        current_diameter = max(left_diameter, right_diameter, left_height + right_height + 1)
+        return (current_diameter, current_height)
+
+    # Check if the tree is balanced
+    def is_balanced(self):
+        return self._is_balanced_recursive(self.root)
+
+    def _is_balanced_recursive(self, node):
+        if node is None:
+            return True
+        left_height = self._height_recursive(node.left)
+        right_height = self._height_recursive(node.right)
+        if abs(left_height - right_height) <= 1 and self._is_balanced_recursive(node.left) and self._is_balanced_recursive(node.right):
+            return True
+        return False
+
+    # Check if the tree is a valid Binary Search Tree (BST)
+    def is_bst(self):
+        return self._is_bst_recursive(self.root, float('-inf'), float('inf'))
+
+    def _is_bst_recursive(self, node, min_val, max_val):
+        if node is None:
+            return True
+        if node.value <= min_val or node.value >= max_val:
+            return False
+        return self._is_bst_recursive(node.left, min_val, node.value) and self._is_bst_recursive(node.right, node.value, max_val)
+
+    # Find the Lowest Common Ancestor (LCA) of two nodes
+    def lca(self, p, q):
+        return self._lca_recursive(self.root, p, q)
+
+    def _lca_recursive(self, node, p, q):
+        if node is None:
+            return None
+        if node.value == p or node.value == q:
+            return node
+        left = self._lca_recursive(node.left, p, q)
+        right = self._lca_recursive(node.right, p, q)
+        if left and right:
+            return node
+        return left if left else right
+
+    # Count the number of nodes in the tree
+    def count_nodes(self):
+        return self._count_nodes_recursive(self.root)
+
+    def _count_nodes_recursive(self, node):
+        if node is None:
+            return 0
+        return 1 + self._count_nodes_recursive(node.left) + self._count_nodes_recursive(node.right)
+
+    # Count the number of leaf nodes in the tree
+    def count_leaf_nodes(self):
+        return self._count_leaf_nodes_recursive(self.root)
+
+    def _count_leaf_nodes_recursive(self, node):
+        if node is None:
+            return 0
+        if node.left is None and node.right is None:
+            return 1
+        return self._count_leaf_nodes_recursive(node.left) + self._count_leaf_nodes_recursive(node.right)
+
+    # Print all leaf nodes
+    def print_leaf_nodes(self):
+        self._print_leaf_nodes_recursive(self.root)
+
+    def _print_leaf_nodes_recursive(self, node):
+        if node is None:
+            return
+        if node.left is None and node.right is None:
+            print(node.value, end=" ")
+        self._print_leaf_nodes_recursive(node.left)
+        self._print_leaf_nodes_recursive(node.right)
+
+    # Check if the tree is a full binary tree
+    def is_full(self):
+        return self._is_full_recursive(self.root)
+
+    def _is_full_recursive(self, node):
+        if node is None:
+            return True
+        if node.left is None and node.right is None:
+            return True
+        if node.left is not None and node.right is not None:
+            return self._is_full_recursive(node.left) and self._is_full_recursive(node.right)
+        return False
+
+    # Check if the tree is a complete binary tree
+    def is_complete(self):
+        total_nodes = self.count_nodes()
+        return self._is_complete_recursive(self.root, 0, total_nodes)
+
+    def _is_complete_recursive(self, node, index, total_nodes):
+        if node is None:
+            return True
+        if index >= total_nodes:
+            return False
+        return (self._is_complete_recursive(node.left, 2 * index + 1, total_nodes) and
+                self._is_complete_recursive(node.right, 2 * index + 2, total_nodes))
+
+    # Mirror the tree
+    def mirror(self):
+        self._mirror_recursive(self.root)
+
+    def _mirror_recursive(self, node):
+        if node is None:
+            return
+        self._mirror_recursive(node.left)
+        self._mirror_recursive(node.right)
+        node.left, node.right = node.right, node.left
 
     """
