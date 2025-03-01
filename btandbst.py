@@ -1,3 +1,5 @@
+from collections import deque
+
 class BinaryTree:
     class Node:
         def __init__(self, value):
@@ -8,24 +10,30 @@ class BinaryTree:
     def __init__(self):
         self.root = None
 
-    # Insert a value into the binary tree
+    # Insert a value into the binary tree in level order
     def insert(self, value):
+        new_node = self.Node(value)
+        
         if self.root is None:
-            self.root = self.Node(value)
-        else:
-            self._insert_recursive(self.root, value)
+            self.root = new_node
+            return
 
-    def _insert_recursive(self, node, value):
-        if value < node.value:
+        queue = deque([self.root])  # Use a queue for level-order traversal
+
+        while queue:
+            node = queue.popleft()
+
             if node.left is None:
-                node.left = self.Node(value)
+                node.left = new_node
+                return
             else:
-                self._insert_recursive(node.left, value)
-        else:
+                queue.append(node.left)
+
             if node.right is None:
-                node.right = self.Node(value)
+                node.right = new_node
+                return
             else:
-                self._insert_recursive(node.right, value)
+                queue.append(node.right)
 
     # Traversals
     def inorder_traversal(self, node, result=None):
